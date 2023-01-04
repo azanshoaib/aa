@@ -9,14 +9,19 @@ import { Link } from "react-router-dom";
 export const Register = () => {
   const [err, setErr] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
+  const [name,setName] = useState("")
+  const [email,setEmail] = useState("")
+  const [password,setPassword] = useState("")
 
   const handleSubmit = async (e) => {
-    setLoading(true);
+    console.log("called",e.target)
+    
     e.preventDefault();
-    const displayName = e.target[0].value;
-    const email = e.target[1].value;
-    const password = e.target[2].value;
-    const file = e.target[3].files[0];
+    setLoading(true);
+    //  const displayName = e.target[0].value;
+    // const email = e.target[1].value;
+    // const password = e.target[2].value;
+    //  const file = e.target[3].files[0];
 
     try {
       //Create user
@@ -24,23 +29,23 @@ export const Register = () => {
 
       //Create a unique image name
       const date = new Date().getTime();
-      const storageRef = ref(storage, `${displayName + date}`);
+      // const storageRef = ref(storage, `${name + date}`);
 
-      await uploadBytesResumable(storageRef, file).then(() => {
-        getDownloadURL(storageRef).then(async (downloadURL) => {
-          try {
-            //Update profile
+      // await uploadBytesResumable(storageRef, file).then(() => {
+      //   getDownloadURL(storageRef).then(async (downloadURL) => {
+      //     try {
+      //       //Update profile
 
 
-            //create empty user chats on firestore
-            await setDoc(doc(db, "userChats", res.user.uid), {});
-          } catch (err) {
-            console.log(err);
-            setErr(true);
-            setLoading(false);
-          }
-        });
-      });
+      //       //create empty user chats on firestore
+      //       await setDoc(doc(db, "userChats", res.user.uid), {});
+      //     } catch (err) {
+      //       console.log(err);
+      //       setErr(true);
+      //       setLoading(false);
+      //     }
+      //   });
+      // });
     } catch (err) {
       setErr(true);
       setLoading(false);
@@ -53,9 +58,9 @@ export const Register = () => {
         <span className="logo">Product Hunting</span>
         <span className="title">Register</span>
         <form onSubmit={handleSubmit}>
-          <input required type="text" placeholder="Enter Name" />
-          <input required type="email" placeholder="Email" />
-          <input required type="password" placeholder="password" />
+          <input required type="text" placeholder="Enter Name" value={name} onChange={(e)=>setName(e.target.value)}/>
+          <input required type="email" placeholder="Email" value={email} onChange={(e)=>setEmail(e.target.value)} />
+          <input required type="password" placeholder="password"  value={password} onChange={(e)=>setPassword(e.target.value)}/>
          
           <button >Sign up</button>
           
